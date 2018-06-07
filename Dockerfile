@@ -7,7 +7,7 @@ RUN apt-get install -y libxml2 libxml2-dev
 RUN docker-php-ext-install soap
 
 # Sendmail 
-RUN sudo apt-get install -y --no-install-recommends sendmail
+RUN apt-get install -y --no-install-recommends sendmail
 RUN rm -rf /var/lib/apt/lists/* 
 RUN echo "sendmail_path=sendmail -t -i" >> /usr/local/etc/php/conf.d/sendmail.ini
 RUN echo '#!/bin/bash' >> /usr/local/bin/docker-entrypoint-wrapper.sh
