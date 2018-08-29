@@ -17,5 +17,12 @@ RUN echo 'service sendmail restart' >> /usr/local/bin/docker-entrypoint-wrapper.
 RUN echo 'exec docker-entrypoint.sh "$@"' >> /usr/local/bin/docker-entrypoint-wrapper.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint-wrapper.sh
 
+# Make sure we can get the forwarded IP from proxy
+RUN a2enmod remoteip
+RUN sed -i 's/LogFormat "%h %l %u %t \\"%r\\" %>s %O \\"%{Referer}i\\" \\"%{User-Agent}i\\"" combined/LogFormat "%a %l %u %t \\"%r\\" %>s %O \\"%{Referer}i\\" \\"%{User-Agent}i\\"" combined/g' /etc/apache2/apache2.conf
+RUN echo -n "# Remote IP configuration" >> /etc/apache2/apache2.conf 
+RUN echo -n "RemoteIPHeader X-Real-IP" >> /etc/apache2/apache2.conf 
+RUN echo -n "RemoteIPTrustedProxy https" >> /etc/apache2/apache2.conf 
+
 ENTRYPOINT ["docker-entrypoint-wrapper.sh"]
 CMD ["apache2-foreground"]
