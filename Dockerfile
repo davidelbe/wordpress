@@ -24,5 +24,8 @@ RUN echo "# Remote IP configuration" >> /etc/apache2/apache2.conf
 RUN echo "RemoteIPHeader X-Real-IP" >> /etc/apache2/apache2.conf
 RUN echo "RemoteIPTrustedProxy https" >> /etc/apache2/apache2.conf
 
+# Headers module needed by some Wordpress cache plugin's
+RUN a2enmod headers
+
 ENTRYPOINT ["docker-entrypoint-wrapper.sh"]
 CMD ["apache2-foreground"]
