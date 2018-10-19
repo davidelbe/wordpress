@@ -17,6 +17,16 @@ RUN echo 'service sendmail restart' >> /usr/local/bin/docker-entrypoint-wrapper.
 RUN echo 'exec docker-entrypoint.sh "$@"' >> /usr/local/bin/docker-entrypoint-wrapper.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint-wrapper.sh
 
+# Pagespeed
+RUN cd /tmp \
+    && curl -o /tmp/mod-pagespeed.deb https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-beta_current_amd64.deb \
+    && dpkg -i /tmp/mod-pagespeed.deb \
+    && apt-get -f install
+RUN a2enmod pagespeed
+RUN a2enmod expires
+RUN echo "ModPagespeed On" >> /etc/apache2/apache2.conf
+RUN echo "ModPagespeedEnableFilters combine_css,combine_javascript,inline_google_font_css,move_css_to_head,extend_cache,rewrite_images" >> /etc/apache2/apache2.conf
+
 # Make sure we can get the forwarded IP from proxy
 RUN a2enmod remoteip
 RUN sed -i 's/LogFormat "%h %l %u %t \\"%r\\" %>s %O \\"%{Referer}i\\" \\"%{User-Agent}i\\"" combined/LogFormat "%a %l %u %t \\"%r\\" %>s %O \\"%{Referer}i\\" \\"%{User-Agent}i\\"" combined/g' /etc/apache2/apache2.conf
