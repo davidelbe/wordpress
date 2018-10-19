@@ -25,7 +25,12 @@ RUN cd /tmp \
 RUN a2enmod pagespeed
 RUN a2enmod expires
 RUN echo "ModPagespeed On" >> /etc/apache2/apache2.conf
-RUN echo "ModPagespeedEnableFilters combine_css,combine_javascript,inline_google_font_css,move_css_to_head,extend_cache,rewrite_images" >> /etc/apache2/apache2.conf
+RUN echo "ModPagespeedRewriteLevel CoreFilters" >> /etc/apache2/apache2.conf
+RUN echo "ModPagespeedRespectXForwardedProto on" >> /etc/apache2/apache2.conf
+RUN echo "ModPagespeedMaxCombinedJsBytes 250000" >> /etc/apache2/apache2.conf
+RUN echo "ModPagespeedMaxSegmentLength 1024" >> /etc/apache2/apache2.conf
+RUN echo "ModPagespeedDomain *" >> /etc/apache2/apache2.conf
+RUN echo "ModPagespeedEnableFilters extend_cache,prioritize_critical_css,defer_javascript" >> /etc/apache2/apache2.conf
 
 # Make sure we can get the forwarded IP from proxy
 RUN a2enmod remoteip
