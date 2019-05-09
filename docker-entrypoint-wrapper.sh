@@ -5,6 +5,9 @@ set -euo pipefail
 echo "127.0.0.1 $(hostname) localhost localhost.localdomain" >> /etc/hosts
 service sendmail restart
 
+# Enable extensions and config for specific server
+[ -f /hekto/container ] && chmod +x /hekto/container && sh /hekto/container
+
 # Handle demo site
 if [ "$DEMO_SITE" = "1" ] ; then
     a2enmod session
