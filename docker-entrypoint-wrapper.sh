@@ -46,4 +46,4 @@ if [ "$DEMO_SITE" = "1" ] ; then
 fi
 
 # Entrypoint
-"$@"
+exec docker-entrypoint.sh "$@"
