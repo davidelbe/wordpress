@@ -42,7 +42,8 @@ RUN echo "RemoteIPTrustedProxy https" >> /etc/apache2/apache2.conf
 RUN a2enmod headers
 
 # File uploads
-RUN echo 'upload_max_filesize 50M' > /usr/local/etc/php/conf.d/hekto.ini
+RUN echo 'upload_max_filesize = 50M' > /usr/local/etc/php/conf.d/hekto.ini
+RUN echo 'post_max_size = 50M' > /usr/local/etc/php/conf.d/hekto.ini
 
 # Assets for demo auth protection
 COPY .standout_wp/ /var/www/.standout_wp/
