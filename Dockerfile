@@ -41,6 +41,9 @@ RUN echo "RemoteIPTrustedProxy https" >> /etc/apache2/apache2.conf
 # Headers module needed by some Wordpress cache plugin's
 RUN a2enmod headers
 
+# File uploads
+RUN echo 'upload_max_filesize 50M' > /usr/local/etc/php/conf.d/hekto.ini
+
 # Assets for demo auth protection
 COPY .standout_wp/ /var/www/.standout_wp/
 
