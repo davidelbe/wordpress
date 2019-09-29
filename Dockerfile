@@ -5,6 +5,8 @@ ENV DEMO_SITE_USERNAME standoutwp
 ENV DEMO_SITE_PASSWORD standoutwp
 ENV DEMO_SITE_PASSPHRASE 36303902180949383769
 
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+
 RUN apt-get update
 RUN apt-get install -y libxml2 libxml2-dev
 
@@ -15,6 +17,22 @@ RUN docker-php-ext-install soap
 RUN apt-get install -y --no-install-recommends sendmail
 RUN rm -rf /var/lib/apt/lists/*
 RUN echo "sendmail_path=sendmail -t -i" >> /usr/local/etc/php/conf.d/sendmail.ini
+
+# Pagespeed
+RUN cd /tmp \
+    && curl -o /tmp/mod-pagespeed.deb https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb  \
+    && dpkg -i /tmp/mod-pagespeed.deb \
+    && apt-get -f install --allow-unauthenticated
+RUN a2enmod pagespeed
+RUN a2enmod expires
+RUN echo "ModPagespeed On" >> /etc/apache2/apache2.conf
+RUN echo "ModPagespeedRewriteLevel CoreFilters" >> /etc/apache2/apache2.conf
+RUN echo "ModPagespeedRespectXForwardedProto on" >> /etc/apache2/apache2.conf
+RUN echo "ModPagespeedMaxCombinedJsBytes 250000" >> /etc/apache2/apache2.conf
+RUN echo "ModPagespeedMaxSegmentLength 1024" >> /etc/apache2/apache2.conf
+RUN echo "ModPagespeedDomain *" >> /etc/apache2/apache2.conf
+RUN echo "ModPagespeedEnableFilters extend_cache,prioritize_critical_css,defer_javascript" >> /etc/apache2/apache2.conf
+
 
 # Make sure we can get the forwarded IP from proxy
 RUN a2enmod remoteip
