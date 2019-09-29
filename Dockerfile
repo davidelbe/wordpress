@@ -5,10 +5,10 @@ ENV DEMO_SITE_USERNAME standoutwp
 ENV DEMO_SITE_PASSWORD standoutwp
 ENV DEMO_SITE_PASSPHRASE 36303902180949383769
 
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-
 RUN apt-get update
-RUN apt-get install -y libxml2 libxml2-dev
+RUN apt-get install -y libxml2 libxml2-dev wget
+
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 
 # Install PHP Soap Extention
 RUN docker-php-ext-install soap
