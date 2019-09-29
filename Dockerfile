@@ -6,7 +6,7 @@ ENV DEMO_SITE_PASSWORD standoutwp
 ENV DEMO_SITE_PASSPHRASE 36303902180949383769
 
 RUN apt-get update
-RUN apt-get install -y libxml2 libxml2-dev wget
+RUN apt-get install -y libxml2 libxml2-dev wget gnupg
 
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 
