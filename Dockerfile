@@ -17,8 +17,9 @@ RUN rm -rf /var/lib/apt/lists/*
 RUN echo "sendmail_path=sendmail -t -i" >> /usr/local/etc/php/conf.d/sendmail.ini
 
 # Pagespeed
+
 RUN cd /tmp \
-    && curl -o /tmp/mod-pagespeed.deb https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-beta_current_amd64.deb \
+    && curl -o /tmp/mod-pagespeed.deb https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb  \
     && dpkg -i /tmp/mod-pagespeed.deb \
     && apt-get -f install
 RUN a2enmod pagespeed
